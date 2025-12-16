@@ -36,7 +36,7 @@ end
 ---@param path string the mods_path directory
 local function load_mods(path)
     local this_mod = core.get_current_modname()
-    local depends, optional_depends = get_depends(this_mod)
+    local depends, optional_depends = get_dependencies(this_mod)
     local undocumented_depends = {}
 
     for _, mod_name in ipairs(core.get_modnames()) do
