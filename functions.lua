@@ -33,7 +33,7 @@ local function get_dependencies(mod_name)
 end
 
 --- loads dependencies at the provided path
----@param path string the dependencies path
+---@param path string the mods_path directory
 local function load_mods(path)
     local this_mod = core.get_current_modname()
     local depends, optional_depends = get_depends(this_mod)
@@ -69,7 +69,7 @@ local function load_mods(path)
 end
 
 --- loads the game specific script
----@param path string the dependencies path
+---@param path string the games_path directory
 local function load_game(path)
     local this_mod = core.get_current_modname()
     local game_info = core.get_game_info()
@@ -88,24 +88,18 @@ local function load_game(path)
 end
 
 local function handle_params_table(params)
-    local temp = {
-        mods_path = "/depends/mods",
-        games_path = "/depends/games"
+    return {
+        mods_path = params.mods_path or "/depends/mods",
+        games_path = params.mods_path or "/depends/games"
     }
-
-    if not params then return temp end
-
-    for key, value in pairs(params) do temp[key] = value end
-
-    return temp
 end
 
 --- handles dependency loading
----@param params any
+---@param params table table specifies the `mods_path` and `games_path`, the target directories to be loaded
 function deploader.load_depends(params)
     local mod_name = core.get_current_modname()
     local path = deploader.current_path or core.get_modpath(mod_name)
-    local params = handle_params_table(params)
+    local params = handle_params_table(params or {})
 
     load_mods(path .. params.mods_path)
     load_game(path .. params.games_path)
