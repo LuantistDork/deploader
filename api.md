@@ -1,5 +1,6 @@
 # Directory structure
 By default, `depload.load_depends` loads dependency scripts in `/depends/mods` and `/depends/games`.
+
 ```
 /my_mod/depends
 ├── mods
@@ -9,14 +10,17 @@ By default, `depload.load_depends` loads dependency scripts in `/depends/mods` a
     ├── some_game
     └── another_game
 ```
+
 Each folder must contain an `init.lua` file for deploader to recognize it.
 <br><br>
 If you want, you can add a folder for the current mod into your `/depends/mods` like so:
+
 ```
 my_mod/depends/mods
 ├── my_mod
 └── ...
 ```
+
 You won't get an error from deploader, as deploader treats every mod like they silently depend on themselves, and therefore you don't need to add the mod name to `mod.conf` in this case.
 
 # 'deploader' namespace reference
@@ -29,5 +33,7 @@ You won't get an error from deploader, as deploader treats every mod like they s
     * raises an error when it tries to load a satiated mod dependency without it being included in the `mod.conf`
 
 ## Dependency exclusive
+
 All members listed here are exclusive to dependencies in your dependency folders.
+
 * `deploader.current_path`: the path of the `/depends/...` folder for the current dependency script, this is provided in case you want to use `dofile` without manual path management.
