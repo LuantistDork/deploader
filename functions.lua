@@ -63,14 +63,39 @@ local function load_mods(path)
     end
 end
 
+-- gets the supported games from mod.conf
+---@param mod_name string the name of the mod
+---@return table supported_games the games explicitly supported by the mod (supported_games in the mod.conf)
+local function get_supported_games(mod_name)
+	local settings = Settings(core.get_modpath(mod_name) .. "/mod.conf")
+
+    local supported_games = {}
+
+    if not settings then return supported_games end
+
+    local str = settings:get("supported_games") or ""
+    for game_id in string.gmatch(str, "[a-z0-9_]+") do
+        supported_games[game_id] = true
+    end
+
+    return supported_games
+end
+
 --- loads game specific scripts at the provided path.
 ---@param path string the games_path directory
 local function load_game(path)
     local this_mod = core.get_current_modname()
+    local supported_games = get_supported_games(this_mod)
     local game_id = core.get_game_info().id
 	local init_path = path .. "/" .. game_id .. "/init.lua"
 
 	if io.open(init_path, "r") then
+		
+		-- if support for this game isn't documented in the mod.conf, then give a warning.
+		if not supported_games[game_id] then
+			core.log("warning", string.format("[%s] undocumented game support: %s (consider adding it to your mod.conf)", this_mod, game_id))
+		end
+
 		core.log("info", string.format("[%s] loading game specific script for %s", this_mod, game_id))
 		deploader.current_path = path .. "/" .. game_id
 		dofile(init_path)
