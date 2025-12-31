@@ -34,7 +34,7 @@ local function load_mods(path, aliases)
     local undocumented_depends = {}
 
     for _, actual_mod_name in ipairs(core.get_modnames()) do
-		local mod_name = aliases[actual_mod_name]
+		local mod_name = aliases[actual_mod_name] or actual_mod_name
         local init_path = path .. "/" .. mod_name .. "/init.lua"
 
         if io.open(init_path, "r") then
