@@ -12,7 +12,9 @@ By default, `depload.load_depends` loads dependency scripts in `/depends/mods` a
 ```
 
 Each folder must contain an `init.lua` file for deploader to recognize it.
+
 <br><br>
+
 If you want, you can add a folder for the current mod into your `/depends/mods` like so:
 
 ```
